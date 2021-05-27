@@ -9,7 +9,7 @@ function addClickHandlers() {
 
   // TODO - Add code for edit & delete buttons
   $('#bookShelf').on('click', '.bookToDelete', handleBookDelete);
-  $('#bookShelf').on('click', '.isReadButton', handleIsRead);
+  $('#bookShelf').on('click', '.isReadButton', readHandle);
 }
 
 function handleSubmit() {
@@ -85,24 +85,24 @@ function handleBookDelete() {
   deleteBook($(this).data("id"));
 } // end handleReadBook fn
 
-// function putDownVoteHandler() {
-//   // pass the songId and the vote direction
-//   handleIsRead($(this).data("id"), "down");
-// }
+function readHandle() {
+  // pass the songId and the vote direction
+  handleIsRead($(this).data("id"), "TRUE");
+}
 
 // Record the vote
 /**
 * Change the rank on a song, using the song's id and a voting direction. Up votes increase the song rank. Down votes
 * decrease the song rank.
-* @param {number} songId
-* @param {string} voteDirection
+* @param {number} bookId
+* @param {string} haveRead
 */
 function handleIsRead(bookId, haveRead) {
   $.ajax({
       method: 'PUT',
       url: `/books/${bookId}`,
       data: {
-          isRead: haveRead
+          isRead: haveRead //req.body.direction, will evaluate to either true or false
       }
   })
   .then(response => {

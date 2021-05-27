@@ -58,14 +58,19 @@ router.delete('/:id', (req, res) => {
       });
 });
 
+// url localhost:5000/books/id
 router.put('/:id', (req, res) => {
   const bookId = req.params.id;
 
   let haveRead = req.body.isRead;
 
-  let queryString = 'UPDATE "books" SET "isRead"=TRUE WHERE "books".id = $1;';
+  let queryString = '';
 
-  pool.query(queryString, [bookId])
+  if (haveRead === 'TRUE'){
+      queryString = 'UPDATE "books" SET "isRead"=TRUE WHERE "books".id= $1;'; // $1 comes from url, it is req.params.id
+  }
+
+  pool.query(queryString, [bookId]) // here $1 becomes bookID array, which is req.params.id
       .then(response => {
           console.log(response.rowCount);
           res.sendStatus(202);
