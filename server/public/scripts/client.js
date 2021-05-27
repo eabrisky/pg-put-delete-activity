@@ -85,10 +85,10 @@ function handleBookDelete() {
   deleteBook($(this).data("id"));
 } // end handleReadBook fn
 
-function putDownVoteHandler() {
-  // pass the songId and the vote direction
-  voteOnSong($(this).data("id"), "down");
-}
+// function putDownVoteHandler() {
+//   // pass the songId and the vote direction
+//   handleIsRead($(this).data("id"), "down");
+// }
 
 // Record the vote
 /**
@@ -97,12 +97,12 @@ function putDownVoteHandler() {
 * @param {number} songId
 * @param {string} voteDirection
 */
-function handleIsRead(bookId, voteDirection) {
+function handleIsRead(bookId, haveRead) {
   $.ajax({
       method: 'PUT',
       url: `/books/${bookId}`,
       data: {
-          isRead: voteDirection
+          isRead: haveRead
       }
   })
   .then(response => {
@@ -114,3 +114,7 @@ function handleIsRead(bookId, voteDirection) {
       alert('There was a problem marking this as read. Are you sure you read it? 🧐');
   });
 }
+
+// Could not update book read status due to error: invalid input syntax for type integer: "[object Object]"
+// PUT http://localhost:5000/books/[object%20Object] 500 (Internal Server Error)
+// handleIsRead @client.js:101
