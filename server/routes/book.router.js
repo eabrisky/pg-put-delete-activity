@@ -60,7 +60,7 @@ router.delete('/:id', (req, res) => {
 
 // url localhost:5000/books/id
 router.put('/:id', (req, res) => {
-  const bookId = req.params.id;
+  const bookId = req.params.id; // data from client
 
   let haveRead = req.body.isRead;
 
