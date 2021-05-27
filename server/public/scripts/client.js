@@ -8,6 +8,7 @@ function addClickHandlers() {
   $('#submitBtn').on('click', handleSubmit);
 
   // TODO - Add code for edit & delete buttons
+  $('#bookShelf').on('click', '.bookToDelete', handleBookDelete);
 }
 
 function handleSubmit() {
@@ -58,7 +59,26 @@ function renderBooks(books) {
       <tr>
         <td>${book.title}</td>
         <td>${book.author}</td>
+        <td>${book.isRead}</td>
+        <td><button class="bookToDelete" data-id=${book.id}>Delete</button></td>
       </tr>
     `);
   }
 }
+
+function deleteBook(bookId) {
+  $.ajax({
+      method: 'DELETE',
+      url: `/books/${bookId}`
+  }).then(response => {
+      console.log('GOODBYE, KNOWLEDGE! 👋');
+      refreshBooks();
+  }).catch(err => {
+      alert('There was a problem getting rid of that book. Maybe reconsider? 🥺', err);
+      console.log(err);
+  });
+}
+
+function handleBookDelete() {
+  deleteBook($(this).data("id"));
+} // end handleReadBook fn
