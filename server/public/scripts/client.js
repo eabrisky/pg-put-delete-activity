@@ -9,6 +9,7 @@ function addClickHandlers() {
 
   // TODO - Add code for edit & delete buttons
   $('#bookShelf').on('click', '.bookToDelete', handleBookDelete);
+  $('#bookShelf').on('click', '.isReadButton', handleIsRead);
 }
 
 function handleSubmit() {
@@ -60,6 +61,7 @@ function renderBooks(books) {
         <td>${book.title}</td>
         <td>${book.author}</td>
         <td>${book.isRead}</td>
+        <td><button class="isReadButton" data-id=${book.id}>Read It</button></td>
         <td><button class="bookToDelete" data-id=${book.id}>Delete</button></td>
       </tr>
     `);
@@ -82,3 +84,33 @@ function deleteBook(bookId) {
 function handleBookDelete() {
   deleteBook($(this).data("id"));
 } // end handleReadBook fn
+
+function putDownVoteHandler() {
+  // pass the songId and the vote direction
+  voteOnSong($(this).data("id"), "down");
+}
+
+// Record the vote
+/**
+* Change the rank on a song, using the song's id and a voting direction. Up votes increase the song rank. Down votes
+* decrease the song rank.
+* @param {number} songId
+* @param {string} voteDirection
+*/
+function handleIsRead(bookId, voteDirection) {
+  $.ajax({
+      method: 'PUT',
+      url: `/books/${bookId}`,
+      data: {
+          isRead: voteDirection
+      }
+  })
+  .then(response => {
+      console.log('I READ THIS ALREADY');
+      refreshBooks();
+  })
+  .catch(err => {
+      console.log(`Wait, idk if I've read this actually...`, err);
+      alert('There was a problem marking this as read. Are you sure you read it? 🧐');
+  });
+}

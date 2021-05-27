@@ -58,25 +58,23 @@ router.delete('/:id', (req, res) => {
       });
 });
 
-// router.put('/:id', (req, res) => {
-//   const bookId = req.params.id;
+router.put('/:id', (req, res) => {
+  const bookId = req.params.id;
 
-//   // Change the rank of the song by the user ...
-//   // expected values = 'up' OR 'down';
-//   let direction = req.body.direction;
+  let haveRead = req.body.isRead;
 
-//   let queryString = 'UPDATE "books" SET "isRead"=TRUE WHERE "books".id = $1;';
+  let queryString = 'UPDATE "books" SET "isRead"=TRUE WHERE "books".id = $1;';
 
-//   pool.query(queryString, [bookId])
-//       .then(response => {
-//           console.log(response.rowCount);
-//           res.sendStatus(202);
-//       })
-//       .catch(err => {
-//           console.log('Could not update book read status due to', err);
-//           res.sendStatus(500);
-//       });
-// })
+  pool.query(queryString, [bookId])
+      .then(response => {
+          console.log(response.rowCount);
+          res.sendStatus(202);
+      })
+      .catch(err => {
+          console.log('Could not update book read status due to', err);
+          res.sendStatus(500);
+      });
+})
 
 
 module.exports = router;
